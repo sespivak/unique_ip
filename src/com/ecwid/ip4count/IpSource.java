@@ -5,12 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class IpSource {
-    BufferedReader ipFile;
+    private BufferedReader bufferedReader;
 
     public IpSource(String ipFileName) {
         try {
-            FileReader reader = new FileReader(ipFileName);
-            this.ipFile = new BufferedReader(reader);
+            FileReader fileReader = new FileReader(ipFileName);
+            this.bufferedReader = new BufferedReader(fileReader);
         }
         catch(IOException ex){
             System.out.println(ex.getMessage());
@@ -20,7 +20,7 @@ public class IpSource {
     public String getIp() {
         String res = "";
         try {
-            res = this.ipFile.readLine();
+            res = this.bufferedReader.readLine();
         }
         catch(IOException ex) {
             System.out.println(ex.getMessage());
