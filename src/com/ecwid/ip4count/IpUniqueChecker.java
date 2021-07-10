@@ -8,14 +8,19 @@ public class IpUniqueChecker {
     }
 
     public boolean addNewIp(String ip) {
-        int[] ipBytes = IpParser.parse(ip);
-        if (ipBytes == null) return false;
-        int mostStorageIndex = (ipBytes[0] << 8) + ipBytes[1];
-        int leastStorageIndex = (ipBytes[2] << 8) + ipBytes[3];
-        if (this.ipMostStorage[mostStorageIndex] == null) {
-            this.ipMostStorage[mostStorageIndex] = new IpLeastStorage();
-        }
+        long ipNum = IpParser.parse(ip);
+        return this.addNewIp(ipNum);
+    }
+
+    public boolean addNewIp(long ipNum) {
+        if (ipNum == 0) return false;
+        int mostStorageIndex = (int) (ipNum >> 16);
+        int leastStorageIndex = (int) (ipNum & 0xffff);
         IpLeastStorage ipLeastStorage = this.ipMostStorage[mostStorageIndex];
+        if (ipLeastStorage == null) {
+            ipLeastStorage = new IpLeastStorage();
+            this.ipMostStorage[mostStorageIndex] = ipLeastStorage;
+        }
         return ipLeastStorage.addNewIp(leastStorageIndex);
     }
 }

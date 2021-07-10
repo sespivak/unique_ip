@@ -7,10 +7,12 @@ public class Main {
         String ip;
         long uniqueIpCount = 0;
         IpUniqueChecker ipUniqueChecker = new IpUniqueChecker();
+        long ipNum;
         while (true) {
             ip = ipSource.getIp();
             if (ip == null) break;
-            if (ipUniqueChecker.addNewIp(ip)) {
+            ipNum = IpParser.parse(ip);
+            if (ipUniqueChecker.addNewIp(ipNum)) {
                 uniqueIpCount++;
             }
         }

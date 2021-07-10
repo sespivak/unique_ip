@@ -2,25 +2,34 @@ package com.ecwid.ip4count;
 
 public class IpParser {
 
-    public static int[] parse(String ipString) {
-        String[] segments = ipString.split("\\.");
-        if (segments.length != 4) {
-            System.out.println(ipString);
-            return null;
-        }
-        int[] res = new int[4];
+    public static long parse(String ipString) {
+        int beginIndex = 0;
+        int endIndex;
+        long res = 0;
+        long segment;
         for (int i = 0; i<4; i++) {
+            if (i < 3) {
+                endIndex = ipString.indexOf('.', beginIndex + 1);
+                if (endIndex == -1) {
+                    System.out.println(ipString);
+                    return 0;
+                }
+            } else {
+                endIndex = ipString.length();
+            }
             try {
-                res[i] = Integer.parseUnsignedInt(segments[i]);
+                segment = Integer.parseUnsignedInt(ipString.substring(beginIndex, endIndex));
+                beginIndex = endIndex + 1;
             }
             catch (NumberFormatException e) {
                 System.out.println(ipString);
-                return null;
+                return 0;
             }
-            if (res[i] > 255 || res[i] < 0) {
+            if (segment > 255 || segment < 0) {
                 System.out.println(ipString);
-                return null;
+                return 0;
             }
+            res += segment << ((3 - i) * 8);
         }
         return res;
     }
