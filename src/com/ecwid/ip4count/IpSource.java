@@ -18,7 +18,6 @@ public class IpSource {
     }
 
     public String getIp() {
-        // читаем построчно
         String res = "";
         try {
             res = this.ipFile.readLine();

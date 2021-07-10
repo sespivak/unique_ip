@@ -9,6 +9,7 @@ public class IpUniqueChecker {
 
     public boolean addNewIp(String ip) {
         int[] ipBytes = IpParser.parse(ip);
+        if (ipBytes == null) return false;
         int mostStorageIndex = (ipBytes[0] << 8) + ipBytes[1];
         int leastStorageIndex = (ipBytes[2] << 8) + ipBytes[3];
         if (this.ipMostStorage[mostStorageIndex] == null) {
