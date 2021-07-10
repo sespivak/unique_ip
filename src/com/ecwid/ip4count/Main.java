@@ -1,12 +1,25 @@
 package com.ecwid.ip4count;
 
+import java.io.File;
+
 import static java.lang.Math.round;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        IpSource ipSource = new IpSource("C:\\Downloads\\ip_addresses");
+        if (args.length > 0) {
+            File f = new File(args[0]);
+            if (!f.exists()) {
+                System.out.println("File " + args[0] + " not exists!");
+                System.exit(1);
+            }
+        } else {
+            System.out.println("IP address filename required in argument!");
+            System.exit(1);
+        }
+
+        IpSource ipSource = new IpSource(args[0]);
         long startTimestamp = System.currentTimeMillis();
         long monitorTimestamp = startTimestamp;
         long ipReadCount = 0;
