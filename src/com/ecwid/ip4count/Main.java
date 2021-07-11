@@ -1,10 +1,13 @@
 package com.ecwid.ip4count;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static java.lang.Math.round;
 
 public class Main {
+
+    public static final int IP_BATCH_SIZE = 10000;
 
     public static void main(String[] args) {
 
@@ -19,34 +22,40 @@ public class Main {
             System.exit(1);
         }
 
-        IpSource ipSource = new IpSource(args[0]);
         long startTimestamp = System.currentTimeMillis();
         long monitorTimestamp = startTimestamp;
-        long ipReadCount = 0;
         long timeElapsed;
-        String ip;
+        long ipReadCount = 0;
         long uniqueIpCount = 0;
-        IpUniqueChecker ipUniqueChecker = new IpUniqueChecker();
-        long ipNum;
 
-        while (true) {
-            ip = ipSource.getIp();
-            if (ip == null) break;
-            ipReadCount += 1;
-            ipNum = IpParser.parse(ip);
-            if (ipUniqueChecker.addNewIp(ipNum)) {
-                uniqueIpCount++;
-            }
-            if ((ipReadCount & 0xfffff) == 0) {
-                if (System.currentTimeMillis() - monitorTimestamp >= 10000) {
-                    monitorTimestamp = System.currentTimeMillis();
-                    timeElapsed = monitorTimestamp - startTimestamp;
-                    Main.printStatistics(timeElapsed, ipReadCount, uniqueIpCount, ip);
+        IpSource ipSource = new IpSource(args[0]);
+        IpUniqueChecker ipUniqueChecker = new IpUniqueChecker();
+        String[] ipArray = new String[IP_BATCH_SIZE];
+        String ip = null;
+
+        while (ipArray.length == IP_BATCH_SIZE) {
+            for (int i=0; i < ipArray.length; i++) {
+                ip = ipSource.getIp();
+                if (ip == null) {
+                    ipArray = Arrays.copyOf(ipArray, i);
+                    break;
                 }
+                ipReadCount++;
+                ipArray[i] = ip;
+            }
+            uniqueIpCount += Arrays.stream(ipArray).parallel().reduce(
+                    (long) 0,
+                    (partialSum, ipString) -> partialSum + (ipUniqueChecker.addNewIp(ipString) ? 1 : 0),
+                    Long::sum
+            );
+            if (System.currentTimeMillis() - monitorTimestamp >= 10000) {
+                monitorTimestamp = System.currentTimeMillis();
+                timeElapsed = monitorTimestamp - startTimestamp;
+                printStatistics(timeElapsed, ipReadCount, uniqueIpCount, ip);
             }
         }
         timeElapsed = System.currentTimeMillis() - startTimestamp;
-        Main.printStatistics(timeElapsed, ipReadCount, uniqueIpCount, ip);
+        printStatistics(timeElapsed, ipReadCount, uniqueIpCount, ip);
     }
 
     public static void printStatistics(long timeElapsed, long ipReadCount, long uniqueIpCount, String lastIp) {
