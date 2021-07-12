@@ -8,23 +8,23 @@ public class IpLeastStorage {
     private final Lock lock;
 
     public IpLeastStorage() {
-        this.ipArray = new long[1024];
-        this.lock = new ReentrantLock();
+        ipArray = new long[1024];
+        lock = new ReentrantLock();
     }
 
     public boolean addNewIp(int leastIpBytes) {
         int leastIpIndex = leastIpBytes >> 6;
         long leastIpBitmask = (long) 1 << (leastIpBytes & 63);
-        this.lock.lock();
+        lock.lock();
         try {
-            if ((this.ipArray[leastIpIndex] & leastIpBitmask) == 0) {
-                this.ipArray[leastIpIndex] |= leastIpBitmask;
+            if ((ipArray[leastIpIndex] & leastIpBitmask) == 0) {
+                ipArray[leastIpIndex] |= leastIpBitmask;
                 return true;
             }
             return false;
         }
         finally {
-            this.lock.unlock();
+            lock.unlock();
         }
     }
 }

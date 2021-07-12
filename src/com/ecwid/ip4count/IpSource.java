@@ -10,17 +10,18 @@ public class IpSource {
     public IpSource(String ipFileName) {
         try {
             FileReader fileReader = new FileReader(ipFileName);
-            this.bufferedReader = new BufferedReader(fileReader);
+            bufferedReader = new BufferedReader(fileReader);
         }
         catch(IOException ex){
             System.out.println(ex.getMessage());
+            System.exit(1);
         }
     }
 
     public String getIp() {
         String res = "";
         try {
-            res = this.bufferedReader.readLine();
+            res = bufferedReader.readLine();
         }
         catch(IOException ex) {
             System.out.println(ex.getMessage());

@@ -37,6 +37,8 @@ public class Main {
             for (int i=0; i < ipArray.length; i++) {
                 ip = ipSource.getIp();
                 if (ip == null) {
+                    // last non-null ip value
+                    ip = i>0 ? ipArray[i-1] : ipArray[IP_BATCH_SIZE-1];
                     ipArray = Arrays.copyOf(ipArray, i);
                     break;
                 }
