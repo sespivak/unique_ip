@@ -15,16 +15,17 @@ public class IpLeastStorage {
     public boolean addNewIp(int leastIpBytes) {
         int leastIpIndex = leastIpBytes >> 6;
         long leastIpBitmask = (long) 1 << (leastIpBytes & 63);
+        if ((ipArray[leastIpIndex] & leastIpBitmask) != 0) return false;
         lock.lock();
         try {
             if ((ipArray[leastIpIndex] & leastIpBitmask) == 0) {
                 ipArray[leastIpIndex] |= leastIpBitmask;
                 return true;
             }
-            return false;
         }
         finally {
             lock.unlock();
         }
+        return false;
     }
 }
