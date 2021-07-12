@@ -14,7 +14,7 @@ public class Main {
         if (args.length > 0) {
             File f = new File(args[0]);
             if (!f.exists()) {
-                System.out.println("File '" + args[0] + "' does not exists!");
+                System.out.println("File '" + args[0] + "' does not exist!");
                 System.exit(1);
             }
         } else {
