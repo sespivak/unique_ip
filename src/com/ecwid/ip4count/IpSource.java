@@ -19,13 +19,13 @@ public class IpSource {
     }
 
     public String getIp() {
-        String res = "";
         try {
-            res = bufferedReader.readLine();
+            return bufferedReader.readLine();
         }
         catch(IOException ex) {
             System.out.println(ex.getMessage());
+            System.exit(1);
         }
-        return res;
+        return null;
     }
 }
