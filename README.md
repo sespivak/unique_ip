@@ -7,6 +7,9 @@ Key features:
 * Sparse storage for upper B-class networks. Memory allocated for network only if it contains at least one ip.
 * Memory-effective storage for every B-class network (8kB worst case and 1 bit per IP best case).
 * Parallel processing of read IP blocks.
+* Low algorithm complexity of read/write operations in IP storage - O(1).
+
+There is a Kotlin version in another [repository](https://github.com/sespivak/unique_ip_kt).
 
 ## Requirements
 
