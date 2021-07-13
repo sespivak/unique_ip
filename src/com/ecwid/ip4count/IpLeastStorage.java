@@ -6,10 +6,12 @@ import java.util.concurrent.locks.ReentrantLock;
 public class IpLeastStorage {
     private final long[] ipArray;
     private final Lock lock;
+    private int usedBits;
 
     public IpLeastStorage() {
         ipArray = new long[1024];
         lock = new ReentrantLock();
+        usedBits = 0;
     }
 
     public boolean addNewIp(int leastIpBytes) {
@@ -20,6 +22,7 @@ public class IpLeastStorage {
         try {
             if ((ipArray[leastIpIndex] & leastIpBitmask) == 0) {
                 ipArray[leastIpIndex] |= leastIpBitmask;
+                usedBits++;
                 return true;
             }
         }
@@ -27,5 +30,9 @@ public class IpLeastStorage {
             lock.unlock();
         }
         return false;
+    }
+
+    public int getUsedBits() {
+        return usedBits;
     }
 }

@@ -58,6 +58,7 @@ public class Main {
         }
         timeElapsed = System.currentTimeMillis() - startTimestamp;
         printStatistics(timeElapsed, ipReadCount, uniqueIpCount, ip);
+        ipUniqueChecker.printStatistics();
     }
 
     public static void printStatistics(long timeElapsed, long ipReadCount, long uniqueIpCount, String lastIp) {

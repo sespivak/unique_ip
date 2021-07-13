@@ -93,3 +93,9 @@ Test results with [ip_addresses](https://ecwid-vgv-storage.s3.eu-central-1.amazo
     Time elapsed, sec.: 680 Total IPs read: 7782630000 Unique IPs: 1000000000 Unique percent: 13 Last IP: 187.120.27.116
     Time elapsed, sec.: 690 Total IPs read: 7896180000 Unique IPs: 1000000000 Unique percent: 13 Last IP: 99.122.107.185
     Time elapsed, sec.: 700 Total IPs read: 8000000000 Unique IPs: 1000000000 Unique percent: 13 Last IP: 122.225.71.182
+    LeastStorages used: 65536
+    MostStorage usage, %: 100
+    Min LeastStorage usage, bits: 10658
+    Max LeastStorage usage, bits: 19723
+    Average LeastStorage usage, bits: 15259
+    Average LeastStorage usage, %: 23
